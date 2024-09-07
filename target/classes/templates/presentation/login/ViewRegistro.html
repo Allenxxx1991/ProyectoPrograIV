@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/registro.css}">
+
+</head>
+<body>
+
+<div class="Registro">
+    <form method="post" th:action="@{/presentation/login/registro}" enctype="multipart/form-data">
+        <h2>Registro</h2>
+
+        <!-- Campos del cliente -->
+        <div th:object="${cliente}">
+            <div>
+                <label>Identificación:
+                    <input type="text" th:field="*{idCliente}" required>
+                </label>
+            </div>
+            <div>
+                <label>Nombre:
+                    <input type="text" th:field="*{nombre}" required>
+                </label>
+            </div>
+            <div>
+                <label>Apellido:
+                    <input type="text" th:field="*{apellido}" required>
+                </label>
+            </div>
+            <div>
+                <label>Email:
+                    <input type="email" th:field="*{email}" required>
+                </label>
+            </div>
+            <div>
+                <label>Contraseña:
+                    <input type="password" th:field="*{contrasena}" required>
+                </label>
+            </div>
+            <div>
+                <label>Teléfono:
+                    <input type="text" th:field="*{telefono}" required>
+                </label>
+            </div>
+        </div>
+
+        <!-- Dirección principal -->
+        <div th:object="${direccionPrincipal}">
+            <h3>Dirección Principal</h3>
+            <!-- Dirección principal -->
+            <div>
+                <label>Provincia:
+                    <input type="text" th:field="${direccionPrincipal.provincia}" required>
+                </label>
+            </div>
+            <div>
+                <label>Cantón:
+                    <input type="text" th:field="${direccionPrincipal.canton}" required>
+                </label>
+            </div>
+            <div>
+                <label>Distrito:
+                    <input type="text" th:field="${direccionPrincipal.distrito}" required>
+                </label>
+            </div>
+            <div>
+                <label>Descripción:
+                    <input type="text" th:field="${direccionPrincipal.descripcion}" required>
+                </label>
+            </div>
+        </div>
+        <div>
+            <h3>Dirección Secundaria (Opcional)</h3>
+            <!-- Dirección secundaria -->
+            <div>
+                <label>Provincia:
+                    <input type="text" th:field="${direccionSecundaria.provincia}">
+                </label>
+            </div>
+            <div>
+                <label>Cantón:
+                    <input type="text" th:field="${direccionSecundaria.canton}">
+                </label>
+            </div>
+            <div>
+                <label>Distrito:
+                    <input type="text" th:field="${direccionSecundaria.distrito}">
+                </label>
+            </div>
+            <div>
+                <label>Descripción:
+                    <input type="text" th:field="${direccionSecundaria.descripcion}">
+                </label>
+            </div>
+        </div>
+
+            <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
+        <div>
+            <button type="submit">Registrarse</button>
+        </div>
+    </form>
+</div>
+
+
+</body>
+</html>
+
+

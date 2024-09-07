@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Home</h1>
+<div class="container-home">
+    <div th:if="${session.cliente != null}">
+        <h1>Bienvenido(a) <span th:text="${session.cliente.get().getNombre()}"></span></h1>
+    </div>
+    <div th:if="${session.dependiente != null}">
+        <h1>Bienvenido(a) <span th:text="${session.dependiente.get().getNombre()}"></span></h1>
+    </div>
+    <div th:if="${session.administrador != null}">
+        <h1>Bienvenido(a) <span th:text="${session.administrador.get().getNombre()}"></span></h1>
+    </div>
+</div>
+</body>
+</html>
