@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="distritosFragment">
+    <select id="distritoPrincipal" name="distritoPrincipal" th:field="*{distrito}" required>
+        <option value="">Seleccione un distrito</option>
+        <option th:each="distrito : ${distritos}" th:value="${distrito.key}" th:text="${distrito.value}"></option>
+    </select>
+</div>
+</body>
+</html>

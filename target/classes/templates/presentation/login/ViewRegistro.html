@@ -5,6 +5,7 @@
     <title>Registro</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/registro.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <body>
@@ -12,8 +13,6 @@
 <div class="Registro">
     <form method="post" th:action="@{/presentation/login/registro}" enctype="multipart/form-data">
         <h2>Registro</h2>
-
-        <!-- Campos del cliente -->
         <div th:object="${cliente}">
             <div>
                 <label>Identificación:
@@ -47,60 +46,99 @@
             </div>
         </div>
 
-        <!-- Dirección principal -->
         <div th:object="${direccionPrincipal}">
             <h3>Dirección Principal</h3>
-            <!-- Dirección principal -->
+
             <div>
-                <label>Provincia:
-                    <input type="text" th:field="${direccionPrincipal.provincia}" required>
-                </label>
+                <label>Provincia:</label>
+                <select name="provinciaSeleccionada" th:onchange="this.form.submit()">
+                    <option value="">Seleccione una provincia</option>
+                    <option th:each="provincia : ${provincias}"
+                            th:value="${provincia.key}"
+                            th:text="${provincia.value.nombre}"
+                            th:selected="${provincia.key == provinciaSeleccionada}">
+                    </option>
+                </select>
             </div>
-            <div>
-                <label>Cantón:
-                    <input type="text" th:field="${direccionPrincipal.canton}" required>
-                </label>
+
+            <div th:if="${provinciaSeleccionada != null}">
+                <label>Cantón:</label>
+                <select name="cantonSeleccionado" th:onchange="this.form.submit()">
+                    <option value="">Seleccione un cantón</option>
+                    <option th:each="canton : ${cantones}"
+                            th:value="${canton.key}"
+                            th:text="${canton.value.nombre}"
+                            th:selected="${canton.key == cantonSeleccionado}">
+                    </option>
+                </select>
             </div>
-            <div>
-                <label>Distrito:
-                    <input type="text" th:field="${direccionPrincipal.distrito}" required>
-                </label>
+
+            <div th:if="${cantonSeleccionado != null}">
+                <label>Distrito:</label>
+                <select name="distritoSeleccionado">
+                    <option value="">Seleccione un distrito</option>
+                    <option th:each="distrito : ${distritos}"
+                            th:value="${distrito.key}"
+                            th:text="${distrito.value}"
+                            th:selected="${distrito.key == distritoSeleccionado}">
+                    </option>
+                </select>
             </div>
+
             <div>
-                <label>Descripción:
-                    <input type="text" th:field="${direccionPrincipal.descripcion}" required>
-                </label>
+                <label>Descripción:</label>
+                <input type="text" th:field="*{descripcion}" />
             </div>
         </div>
-        <div>
+
+        <div th:object="${direccionSecundaria}">
             <h3>Dirección Secundaria (Opcional)</h3>
-            <!-- Dirección secundaria -->
+
             <div>
-                <label>Provincia:
-                    <input type="text" th:field="${direccionSecundaria.provincia}">
-                </label>
+                <label>Provincia:</label>
+                <select name="provinciaSecundariaSeleccionada" th:onchange="this.form.submit()">
+                    <option value="">Seleccione una provincia</option>
+                    <option th:each="provincia : ${provincias}"
+                            th:value="${provincia.key}"
+                            th:text="${provincia.value.nombre}"
+                            th:selected="${provincia.key == provinciaSecundariaSeleccionada}">
+                    </option>
+                </select>
             </div>
-            <div>
-                <label>Cantón:
-                    <input type="text" th:field="${direccionSecundaria.canton}">
-                </label>
+
+            <div th:if="${provinciaSecundariaSeleccionada != null}">
+                <label>Cantón (Opcional):</label>
+                <select name="cantonSecundarioSeleccionado" th:onchange="this.form.submit()">
+                    <option value="">Seleccione un cantón</option>
+                    <option th:each="canton : ${cantonesSecundarios}"
+                            th:value="${canton.key}"
+                            th:text="${canton.value.nombre}"
+                            th:selected="${canton.key == cantonSecundarioSeleccionado}">
+                    </option>
+                </select>
             </div>
-            <div>
-                <label>Distrito:
-                    <input type="text" th:field="${direccionSecundaria.distrito}">
-                </label>
+
+            <div th:if="${cantonSecundarioSeleccionado != null}">
+                <label>Distrito (Opcional):</label>
+                <select name="distritoSecundarioSeleccionado">
+                    <option value="">Seleccione un distrito</option>
+                    <option th:each="distrito : ${distritosSecundarios}"
+                            th:value="${distrito.key}"
+                            th:text="${distrito.value}"
+                            th:selected="${distrito.key == distritoSecundarioSeleccionado}">
+                    </option>
+                </select>
             </div>
+
             <div>
-                <label>Descripción:
-                    <input type="text" th:field="${direccionSecundaria.descripcion}">
-                </label>
+                <label>Descripción (Opcional):</label>
+                <input type="text" th:field="*{descripcion}" />
             </div>
         </div>
 
-            <p th:if="${error}" th:text="${error}" class="error-message"></p>
-
+        <p th:if="${error}" th:text="${error}" class="error-message"></p>
         <div>
-            <button type="submit">Registrarse</button>
+            <button type="submit">Actualizar</button>
         </div>
     </form>
 </div>
@@ -108,5 +146,8 @@
 
 </body>
 </html>
+
+
+
 
 
