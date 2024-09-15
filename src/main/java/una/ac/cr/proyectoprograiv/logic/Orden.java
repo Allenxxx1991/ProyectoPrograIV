@@ -25,11 +25,6 @@ public class Orden {
     @JoinColumn(name = "id_cliente")
     private Cliente idCliente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "id_usuario")
-    private Usuario idUsuario;
-
     @ColumnDefault("pendiente")
     @Lob
     @Column(name = "estado")
@@ -65,14 +60,6 @@ public class Orden {
 
     public void setIdCliente(Cliente idCliente) {
         this.idCliente = idCliente;
-    }
-
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
     }
 
     public String getEstado() {

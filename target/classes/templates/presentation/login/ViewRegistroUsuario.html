@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/registro.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<div class="Registro">
+    <form method="post" th:action="@{/presentation/login/registroUsuario}" enctype="multipart/form-data">
+        <h2>Registro</h2>
+        <div th:object="${usuario}">
+            <div>
+                <label>Identificación:
+                    <input type="text" th:field="*{idUsuario}" required>
+                </label>
+            </div>
+            <div>
+                <label>Nombre:
+                    <input type="text" th:field="*{nombre}" required>
+                </label>
+            </div>
+            <div>
+                <label>Apellido:
+                    <input type="text" th:field="*{apellido}" required>
+                </label>
+            </div>
+            <div>
+                <label>Email:
+                    <input type="email" th:field="*{email}" required>
+                </label>
+            </div>
+            <div>
+                <label>Contraseña:
+                    <input type="password" th:field="*{contrasena}" required>
+                </label>
+            </div>
+        </div>
+        <button type="submit">Registrarse</button>
+    </form>
+</div>
+</body>
+</html>

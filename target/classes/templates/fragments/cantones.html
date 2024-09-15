@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="cantonesFragment">
+    <select id="cantonPrincipal" name="cantonPrincipal" th:field="*{canton}" required>
+        <option value="">Seleccione un cantón</option>
+        <option th:each="canton : ${cantones}" th:value="${canton.key}" th:text="${canton.value.nombre}"></option>
+    </select>
+</div>
+</body>
+</html>
+
