@@ -9,7 +9,6 @@
 
 </head>
 <body>
-
 <div class="Registro">
     <form method="post" th:action="@{/presentation/login/registro}" enctype="multipart/form-data">
         <h2>Registro</h2>
@@ -53,32 +52,29 @@
                 <label>Provincia:</label>
                 <select name="provinciaSeleccionada" th:onchange="this.form.submit()">
                     <option value="">Seleccione una provincia</option>
-                    <option th:each="provincia : ${provincias}"
-                            th:value="${provincia.key}"
+                    <option th:each="provincia : ${provincias}" th:value="${provincia.key}"
                             th:text="${provincia.value.nombre}"
                             th:selected="${provincia.key == provinciaSeleccionada}">
                     </option>
                 </select>
             </div>
 
-            <div th:if="${provinciaSeleccionada != null}">
+            <div th:if="${!#strings.isEmpty(provinciaSeleccionada)}">
                 <label>Cantón:</label>
                 <select name="cantonSeleccionado" th:onchange="this.form.submit()">
                     <option value="">Seleccione un cantón</option>
-                    <option th:each="canton : ${cantones}"
-                            th:value="${canton.key}"
+                    <option th:each="canton : ${cantones}" th:value="${canton.key}"
                             th:text="${canton.value.nombre}"
                             th:selected="${canton.key == cantonSeleccionado}">
                     </option>
                 </select>
             </div>
 
-            <div th:if="${cantonSeleccionado != null}">
+            <div th:if="${!#strings.isEmpty(cantonSeleccionado)}">
                 <label>Distrito:</label>
                 <select name="distritoSeleccionado">
                     <option value="">Seleccione un distrito</option>
-                    <option th:each="distrito : ${distritos}"
-                            th:value="${distrito.key}"
+                    <option th:each="distrito : ${distritos}" th:value="${distrito.key}"
                             th:text="${distrito.value}"
                             th:selected="${distrito.key == distritoSeleccionado}">
                     </option>
@@ -87,43 +83,40 @@
 
             <div>
                 <label>Descripción:</label>
-                <input type="text" th:field="*{descripcion}" />
+                <input type="text" th:field="*{descripcion}"/>
             </div>
         </div>
 
         <div th:object="${direccionSecundaria}">
-            <h3>Dirección Secundaria (Opcional)</h3>
+            <h3>Dirección Secundaria</h3>
 
             <div>
-                <label>Provincia:</label>
+                <label>Provincia Secundaria:</label>
                 <select name="provinciaSecundariaSeleccionada" th:onchange="this.form.submit()">
                     <option value="">Seleccione una provincia</option>
-                    <option th:each="provincia : ${provincias}"
-                            th:value="${provincia.key}"
+                    <option th:each="provincia : ${provincias}" th:value="${provincia.key}"
                             th:text="${provincia.value.nombre}"
                             th:selected="${provincia.key == provinciaSecundariaSeleccionada}">
                     </option>
                 </select>
             </div>
 
-            <div th:if="${provinciaSecundariaSeleccionada != null}">
-                <label>Cantón (Opcional):</label>
+            <div th:if="${!#strings.isEmpty(provinciaSecundariaSeleccionada)}">
+                <label>Cantón Secundario:</label>
                 <select name="cantonSecundarioSeleccionado" th:onchange="this.form.submit()">
                     <option value="">Seleccione un cantón</option>
-                    <option th:each="canton : ${cantonesSecundarios}"
-                            th:value="${canton.key}"
+                    <option th:each="canton : ${cantonesSecundarios}" th:value="${canton.key}"
                             th:text="${canton.value.nombre}"
                             th:selected="${canton.key == cantonSecundarioSeleccionado}">
                     </option>
                 </select>
             </div>
 
-            <div th:if="${cantonSecundarioSeleccionado != null}">
-                <label>Distrito (Opcional):</label>
+            <div th:if="${!#strings.isEmpty(cantonSecundarioSeleccionado)}">
+                <label>Distrito Secundario:</label>
                 <select name="distritoSecundarioSeleccionado">
                     <option value="">Seleccione un distrito</option>
-                    <option th:each="distrito : ${distritosSecundarios}"
-                            th:value="${distrito.key}"
+                    <option th:each="distrito : ${distritosSecundarios}" th:value="${distrito.key}"
                             th:text="${distrito.value}"
                             th:selected="${distrito.key == distritoSecundarioSeleccionado}">
                     </option>
@@ -131,19 +124,14 @@
             </div>
 
             <div>
-                <label>Descripción (Opcional):</label>
-                <input type="text" th:field="*{descripcion}" />
+                <label>Descripción:</label>
+                <input type="text" th:field="*{descripcion}"/>
             </div>
         </div>
 
-        <p th:if="${error}" th:text="${error}" class="error-message"></p>
-        <div>
-            <button type="submit">Actualizar</button>
-        </div>
+        <button type="submit" name="action" value="save">Guardar</button>
     </form>
 </div>
-
-
 </body>
 </html>
 
