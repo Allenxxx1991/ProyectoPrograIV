@@ -46,9 +46,6 @@ public class Usuario {
     @Column(name = "estado")
     private String estado;
 
-    @OneToMany(mappedBy = "idUsuario")
-    private Set<Orden> ordens = new LinkedHashSet<>();
-
     public String getIdUsuario() {
         return idUsuario;
     }
@@ -103,14 +100,6 @@ public class Usuario {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public Set<Orden> getOrdens() {
-        return ordens;
-    }
-
-    public void setOrdens(Set<Orden> ordens) {
-        this.ordens = ordens;
     }
 
 }
