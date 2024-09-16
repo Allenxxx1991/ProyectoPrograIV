@@ -121,7 +121,9 @@ public class LoginController {
             @RequestParam(required = false) String provinciaSecundariaSeleccionada,
             @RequestParam(required = false) String cantonSecundarioSeleccionado,
             @RequestParam(required = false) String distritoSecundarioSeleccionado,
-            @RequestParam(value = "action", required = false) String action, // Nuevo parámetro para diferenciar la acción
+            @RequestParam(value = "action", required = false) String action,
+            @RequestParam(required = false) String descripcion,
+            @RequestParam(required = false) String descripcionSecundaria,
             Model model) {
 
         Map<String, Provincia> provincias = service.getProvincias();
@@ -173,11 +175,13 @@ public class LoginController {
 
                 direccionPrincipal.setIdCliente(cliente);
                 direccionPrincipal.setTipo("principal");
+                direccionPrincipal.setDescripcion(descripcion);
                 service.direccionSave(direccionPrincipal);
 
                 if (isDireccionValida(direccionSecundaria)) {
                     direccionSecundaria.setIdCliente(cliente);
                     direccionSecundaria.setTipo("alternativa");
+                    direccionSecundaria.setDescripcion(descripcionSecundaria);
                     service.direccionSave(direccionSecundaria);
                 }
 
