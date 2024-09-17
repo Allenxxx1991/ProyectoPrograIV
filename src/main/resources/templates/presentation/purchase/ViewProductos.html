@@ -14,13 +14,13 @@
     <p th:text="'Price: ' + ${product.precio}">Price</p>
 
     <div class="carousel">
-        <input type="radio" name="carousel-{{product.id}}" id="slide1-{{product.id}}" checked>
-        <input type="radio" name="carousel-{{product.id}}" id="slide2-{{product.id}}">
-        <input type="radio" name="carousel-{{product.id}}" id="slide3-{{product.id}}">
+        <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide1-' + ${product.id}" checked>
+        <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide2-' + ${product.id}">
+        <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide3-' + ${product.id}">
 
         <div class="slides">
             <div th:each="photo, iterStat : ${product.fotoproductos}">
-                <img th:src="@{'/uploads/' + ${photo.foto}}" class="slide" th:classappend="${iterStat.index == 0 ? 'active' : ''}">
+                <img th:src="@{'/uploads/' + ${photo.foto}}" class="slide">
             </div>
         </div>
         <div class="controls">

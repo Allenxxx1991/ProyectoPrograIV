@@ -44,4 +44,10 @@
     border: 1px solid #ddd;
     padding: 5px;
     cursor: pointer;
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.carousel .controls label:hover {
+    background-color: #f0f0f0;
 }

@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 
 import java.util.List;
 
-@Controller
+@org.springframework.stereotype.Controller("purchase")
 public class PurchaseController {
     @Autowired
     Service service;

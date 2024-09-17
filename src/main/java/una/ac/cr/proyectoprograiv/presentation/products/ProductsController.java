@@ -73,7 +73,7 @@ public class ProductsController {
 
         } catch (IOException e) {
             model.addAttribute("error", "Ocurrió un error durante el inicio de sesión.");
-            return "presentation/login/ViewLogin";
+            return "/presentation/products/ViewProductos";
         }
 
         return "redirect:/products";

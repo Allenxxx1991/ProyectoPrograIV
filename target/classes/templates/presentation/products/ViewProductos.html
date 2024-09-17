@@ -19,6 +19,8 @@
         <label for="fotos">Upload Photo:</label>
         <input type="file" th:name="fotos" id="fotos" accept="image/*" multiple/>
 
+        <p th:if="${error}" th:text="${error}" class="error-message"></p>
+
         <button type="submit">Submit</button>
     </form>
 </div>
