@@ -7,6 +7,7 @@ import una.ac.cr.proyectoprograiv.data.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,11 +30,13 @@ public class Service {
     public Iterable<Usuario> usuarioFindAll() { return usuarioRepository.findAll(); }
     public Optional<Cliente> clienteFindById(String id) { return clienteRepository.findById(id); }
     public Optional<Usuario> usuarioFindById(String id) { return usuarioRepository.findById(id); }
+    public Iterable<Producto> productoFindAll() { return productoRepository.findAll(); }
     public void clienteSave(Cliente cliente) { clienteRepository.save(cliente); }
     public void usuarioSave(Usuario usuario) {usuarioRepository.save(usuario); }
     public void direccionSave(Direccion direccion) { direccionRepository.save(direccion); }
     public void productoSave(Producto producto) {productoRepository.save(producto); }
     public void fotoProductoSave(FotoProducto foto) {fotoProductoRepository.save(foto); }
+    public List<FotoProducto> fotoProductoFindByIdProducto(Producto producto) { return fotoProductoRepository.findByIdProducto(producto); }
 
     @PostConstruct
     public void cargarDatos() throws IOException {

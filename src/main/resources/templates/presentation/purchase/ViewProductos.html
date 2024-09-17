@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/productList.css}">
+    <title>Product List</title>
+</head>
+<body>
+<h1>Product List</h1>
+
+<div th:each="product : ${productos}">
+    <h2 th:text="${product.nombre}">Product Name</h2>
+    <p th:text="${product.descripcion}">Product Description</p>
+    <p th:text="'Price: ' + ${product.precio}">Price</p>
+
+    <div class="carousel">
+        <input type="radio" name="carousel-{{product.id}}" id="slide1-{{product.id}}" checked>
+        <input type="radio" name="carousel-{{product.id}}" id="slide2-{{product.id}}">
+        <input type="radio" name="carousel-{{product.id}}" id="slide3-{{product.id}}">
+
+        <div class="slides">
+            <div th:each="photo, iterStat : ${product.fotoproductos}">
+                <img th:src="@{'/uploads/' + ${photo.foto}}" class="slide" th:classappend="${iterStat.index == 0 ? 'active' : ''}">
+            </div>
+        </div>
+        <div class="controls">
+            <label th:for="'slide1-' + ${product.id}">1</label>
+            <label th:for="'slide2-' + ${product.id}">2</label>
+            <label th:for="'slide3-' + ${product.id}">3</label>
+        </div>
+    </div>
+</div>
+</body>
+</html>

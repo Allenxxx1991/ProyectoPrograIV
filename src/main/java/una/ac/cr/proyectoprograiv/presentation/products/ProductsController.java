@@ -47,28 +47,24 @@ public class ProductsController {
                                 @RequestParam("fotos") List<MultipartFile> files,
                                 Model model) {
         try {
-            // Save producto details
             Producto producto = new Producto();
             producto.setNombre(nombre);
             producto.setDescripcion(descripcion);
             producto.setPrecio(BigDecimal.valueOf(precio));
             service.productoSave(producto);
 
-            // Ensure the upload directory exists
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
             for (MultipartFile file : files) {
-                if (file.isEmpty()) continue; // Skip empty files
+                if (file.isEmpty()) continue;
 
-                // Save file
                 String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(file.getInputStream(), filePath);
 
-                // Save file details in the database
                 FotoProducto foto = new FotoProducto();
                 foto.setIdProducto(producto);
                 foto.setFoto(fileName);
