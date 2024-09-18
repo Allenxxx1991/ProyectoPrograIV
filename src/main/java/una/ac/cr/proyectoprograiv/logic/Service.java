@@ -23,6 +23,10 @@ public class Service {
     private ProductoRepository productoRepository;
     @Autowired
     private FotoProductoRepository fotoProductoRepository;
+    @Autowired
+    private OrdenRepository ordenRepository;
+    @Autowired
+    private DetalleOrdenRepository detalleOrdenRepository;
     private Map<String, Provincia> provincias;
 
     public Iterable<Cliente> clienteFindAll() { return clienteRepository.findAll(); }
@@ -31,12 +35,16 @@ public class Service {
     public Optional<Cliente> clienteFindById(String id) { return clienteRepository.findById(id); }
     public Optional<Usuario> usuarioFindById(String id) { return usuarioRepository.findById(id); }
     public Iterable<Producto> productoFindAll() { return productoRepository.findAll(); }
+    public Optional<Producto> productoFindById(int id) { return productoRepository.findById(id); }
     public void clienteSave(Cliente cliente) { clienteRepository.save(cliente); }
     public void usuarioSave(Usuario usuario) {usuarioRepository.save(usuario); }
+    public void ordenSave(Orden orden) {ordenRepository.save(orden); }
+    public void detalleOrdenSave(DetalleOrden detalleOrden) {detalleOrdenRepository.save(detalleOrden); }
     public void direccionSave(Direccion direccion) { direccionRepository.save(direccion); }
     public void productoSave(Producto producto) {productoRepository.save(producto); }
     public void fotoProductoSave(FotoProducto foto) {fotoProductoRepository.save(foto); }
     public List<FotoProducto> fotoProductoFindByIdProducto(Producto producto) { return fotoProductoRepository.findByIdProducto(producto); }
+    public List<DetalleOrden> getDetalleOrdenByOrden(Orden orden) { return detalleOrdenRepository.findByIdOrden(orden); }
 
     @PostConstruct
     public void cargarDatos() throws IOException {
