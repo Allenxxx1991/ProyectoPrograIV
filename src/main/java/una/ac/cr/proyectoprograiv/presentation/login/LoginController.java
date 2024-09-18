@@ -129,44 +129,51 @@ public class LoginController {
         Map<String, Provincia> provincias = service.getProvincias();
         model.addAttribute("provincias", provincias);
 
-        if (provinciaSeleccionada != null && !provinciaSeleccionada.isEmpty()) {
-            Provincia provincia = provincias.get(provinciaSeleccionada);
-            direccionPrincipal.setProvincia(provincia.getNombre());
-            model.addAttribute("cantones", provincia.getCantones());
-        }
+        try {
+            if (provinciaSeleccionada != null && !provinciaSeleccionada.isEmpty()) {
+                Provincia provincia = provincias.get(provinciaSeleccionada);
+                direccionPrincipal.setProvincia(provincia.getNombre());
+                model.addAttribute("cantones", provincia.getCantones());
+            }
 
-        if (cantonSeleccionado != null) {
-            Provincia provincia = provincias.get(provinciaSeleccionada);
-            Canton canton = provincia.getCantones().get(cantonSeleccionado);
-            direccionPrincipal.setCanton(canton.getNombre());
-            model.addAttribute("distritos", canton.getDistritos());
-        }
+            if (cantonSeleccionado != null) {
+                Provincia provincia = provincias.get(provinciaSeleccionada);
+                Canton canton = provincia.getCantones().get(cantonSeleccionado);
+                direccionPrincipal.setCanton(canton.getNombre());
+                model.addAttribute("distritos", canton.getDistritos());
+            }
 
-        if (distritoSeleccionado != null) {
-            Provincia provincia = provincias.get(provinciaSeleccionada);
-            Canton canton = provincia.getCantones().get(cantonSeleccionado);
-            String distritoNombre = canton.getDistritos().get(distritoSeleccionado);
-            direccionPrincipal.setDistrito(distritoNombre);
-        }
+            if (distritoSeleccionado != null) {
+                Provincia provincia = provincias.get(provinciaSeleccionada);
+                Canton canton = provincia.getCantones().get(cantonSeleccionado);
+                String distritoNombre = canton.getDistritos().get(distritoSeleccionado);
+                direccionPrincipal.setDistrito(distritoNombre);
+            }
 
-        if (!provinciaSecundariaSeleccionada.isEmpty()) {
-            Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
-            direccionSecundaria.setProvincia(provinciaSecundaria.getNombre());
-            model.addAttribute("cantonesSecundarios", provinciaSecundaria.getCantones());
-        }
+            if (!provinciaSecundariaSeleccionada.isEmpty()) {
+                Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
+                direccionSecundaria.setProvincia(provinciaSecundaria.getNombre());
+                model.addAttribute("cantonesSecundarios", provinciaSecundaria.getCantones());
+            }
 
-        if (cantonSecundarioSeleccionado != null && !cantonSecundarioSeleccionado.isEmpty()) {
-            Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
-            Canton cantonSecundario = provinciaSecundaria.getCantones().get(cantonSecundarioSeleccionado);
-            direccionSecundaria.setCanton(cantonSecundario.getNombre());
-            model.addAttribute("distritosSecundarios", cantonSecundario.getDistritos());
-        }
+            if (cantonSecundarioSeleccionado != null && !cantonSecundarioSeleccionado.isEmpty()) {
+                Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
+                Canton cantonSecundario = provinciaSecundaria.getCantones().get(cantonSecundarioSeleccionado);
+                direccionSecundaria.setCanton(cantonSecundario.getNombre());
+                model.addAttribute("distritosSecundarios", cantonSecundario.getDistritos());
+            }
 
-        if (distritoSecundarioSeleccionado != null) {
-            Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
-            Canton canton = provinciaSecundaria.getCantones().get(cantonSecundarioSeleccionado);
-            String distritoNombre = canton.getDistritos().get(distritoSecundarioSeleccionado);
-            direccionSecundaria.setDistrito(distritoNombre);
+            if (distritoSecundarioSeleccionado != null) {
+                Provincia provinciaSecundaria = provincias.get(provinciaSecundariaSeleccionada);
+                Canton canton = provinciaSecundaria.getCantones().get(cantonSecundarioSeleccionado);
+                String distritoNombre = canton.getDistritos().get(distritoSecundarioSeleccionado);
+                direccionSecundaria.setDistrito(distritoNombre);
+            }
+        }catch (NullPointerException e) {
+            direccionPrincipal.setCanton("01");
+            direccionPrincipal.setDistrito("01");
+            direccionSecundaria.setCanton("01");
+            direccionSecundaria.setDistrito("01");
         }
 
         if ("save".equals(action)) {
