@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/productList.css}">
+    <title>Product List</title>
+</head>
+<body>
+<div class="productsContainer">
+    <div th:each="product : ${purchaseModel.productos}" class="products">
+        <h2 th:text="${product.nombre}">Product Name</h2>
+        <p th:text="${product.descripcion}">Product Description</p>
+        <p th:text="'Price: ' + ${product.precio}">Price</p>
+
+        <div class="carousel">
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide1-' + ${product.id}" checked>
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide2-' + ${product.id}">
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide3-' + ${product.id}">
+
+            <div class="slides">
+                <div th:each="photo, iterStat : ${product.fotoproductos}">
+                    <img th:src="@{'/uploads/' + ${photo.foto}}" class="slide">
+                </div>
+            </div>
+            <div class="controls">
+                <label th:for="'slide1-' + ${product.id}">1</label>
+                <label th:for="'slide2-' + ${product.id}">2</label>
+                <label th:for="'slide3-' + ${product.id}">3</label>
+            </div>
+        </div>
+        <form th:action="@{/purchase/addProduct}" method="post">
+            <input type="hidden" th:name="productId" th:value="${product.id}"/>
+            <button type="submit">Add to Order</button>
+        </form>
+    </div>
+</div>
+<div class="order">
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detalle : ${purchaseModel.lineas}">
+            <td th:text="${detalle.idProducto.nombre}">Product Name</td>
+            <td th:text="${detalle.idProducto.precio}">Product Price</td>
+            <td th:text="${detalle.cantidad}">Quantity</td>
+            <td th:text="${detalle.cantidad * detalle.idProducto.precio}">Subtotal</td>
+        </tr>
+        </tbody>
+    </table>
+    <form th:action="@{/purchase/createOrder}" method="post">
+        <button type="submit">Create Order</button>
+    </form>
+</div>
+
+</body>
+</html>
