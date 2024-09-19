@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS Producto (
     precio DECIMAL(10, 2) NOT NULL
 );
 
+ALTER TABLE Producto ADD INDEX idx_nombre (nombre);
+
 -- Tabla de Fotos de los productos
 CREATE TABLE IF NOT EXISTS FotoProducto (
     id_foto INT AUTO_INCREMENT PRIMARY KEY,
@@ -60,8 +62,7 @@ CREATE TABLE IF NOT EXISTS Orden (
     total DECIMAL(10, 2) NOT NULL,
     medio_pago VARCHAR(100) NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente) ON DELETE CASCADE,
-    FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario) ON DELETE SET NULL
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente) ON DELETE CASCADE
 );
 
 -- Tabla de Detalle de Orden
@@ -74,3 +75,6 @@ CREATE TABLE IF NOT EXISTS DetalleOrden (
     FOREIGN KEY (id_orden) REFERENCES Orden(id_orden) ON DELETE CASCADE,
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto) ON DELETE CASCADE
 );
+
+INSERT INTO Usuario (id_usuario, nombre, apellido, email, contrasena, rol)
+VALUES ('1234', 'John', 'Doe', 'john.doe@example.com', '1234', 'administrador');

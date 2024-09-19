@@ -239,4 +239,12 @@ public class LoginController {
             return "presentation/login/ViewRegistroUsuario";
         }
     }
+
+    @PostMapping("/logout")
+    public String logout(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        httpSession.invalidate();
+        return "/presentation/login/ViewLogin";
+    }
 }

@@ -1,5 +1,6 @@
 package una.ac.cr.proyectoprograiv.presentation.purchase;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ public class PurchaseController {
     public PurchaseModel createPurchaseModel() {
         return new PurchaseModel();
     }
+    @Autowired
+    private HttpSession httpSession;
 
     @GetMapping("/purchase/products")
     public String listProducts(Model model) {
@@ -41,28 +44,37 @@ public class PurchaseController {
         if (optionalProducto.isPresent()) {
             Producto producto = optionalProducto.get();
 
-            DetalleOrden detalleOrden = new DetalleOrden();
-            detalleOrden.setIdProducto(producto);
-            detalleOrden.setCantidad(1);
-            detalleOrden.setSubtotal(producto.getPrecio().multiply(new BigDecimal(detalleOrden.getCantidad())));
-
             PurchaseModel purchaseModel = (PurchaseModel) model.getAttribute("purchaseModel");
             assert purchaseModel != null;
-            purchaseModel.addLinea(detalleOrden);
+
+            boolean productExists = purchaseModel.getLineas().stream()
+                    .anyMatch(detalle -> detalle.getIdProducto().getId().equals(producto.getId()));
+
+            if (!productExists) {
+                DetalleOrden detalleOrden = new DetalleOrden();
+                detalleOrden.setIdProducto(producto);
+                detalleOrden.setCantidad(1);
+                detalleOrden.setSubtotal(producto.getPrecio().multiply(new BigDecimal(detalleOrden.getCantidad())));
+                purchaseModel.addLinea(detalleOrden);
+                purchaseModel.calculateTotal();
+            }else {
+                model.addAttribute("message", "Product is already in the order.");
+            }
         }
 
         return "presentation/purchase/ViewProductos";
     }
 
+
     @PostMapping("/purchase/createOrder")
-    public String createOrder(Model model) {
+    public String createOrder(@RequestParam String medioPago, Model model) {
         PurchaseModel purchaseModel = (PurchaseModel) model.getAttribute("purchaseModel");
 
         Orden orden = new Orden();
-        List<Cliente> clientes = (List<Cliente>) service.clienteFindAll();
-        orden.setIdCliente(clientes.getFirst());  //I set the first client for now, I'll fix it later
+        Optional<Cliente> cliente = (Optional<Cliente>) httpSession.getAttribute("cliente");
+        orden.setIdCliente(cliente.get());
         orden.setEstado("pendiente");
-        orden.setMedioPago("efectivo");
+        orden.setMedioPago(medioPago);
         orden.setFechaCreacion(Instant.now());
 
         BigDecimal total = BigDecimal.ZERO;
@@ -83,6 +95,30 @@ public class PurchaseController {
         purchaseModel.getLineas().clear();
 
         return "redirect:/purchase/products";
+    }
+
+    @PostMapping("/purchase/updateProductQuantity")
+    public String updateProductQuantity(@RequestParam("productId") int productId,
+                                        @RequestParam("cantidad") int cantidad,
+                                        Model model) {
+        if (cantidad < 1 || cantidad > 100) {
+            model.addAttribute("error", "Quantity must be between 1 and 100.");
+            return "presentation/purchase/ViewProductos";
+        }
+
+        PurchaseModel purchaseModel = (PurchaseModel) model.getAttribute("purchaseModel");
+        assert purchaseModel != null;
+
+        purchaseModel.getLineas().stream()
+                .filter(detalle -> detalle.getIdProducto().getId().equals(productId))
+                .findFirst()
+                .ifPresent(detalle -> {
+                    detalle.setCantidad(cantidad);
+                    detalle.setSubtotal(detalle.getIdProducto().getPrecio().multiply(new BigDecimal(detalle.getCantidad())));
+                });
+        purchaseModel.calculateTotal();
+
+        return "presentation/purchase/ViewProductos";
     }
 
 
