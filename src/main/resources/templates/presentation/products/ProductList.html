@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Productos</title>
+</head>
+<body>
+<h1>Lista de Productos</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Precio</th>
+    <th>Imagen</th> <!-- Nueva columna para la imagen -->
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="producto : ${productos}">
+    <td th:text="${producto.id}">ID</td>
+    <td th:text="${producto.nombre}">Nombre</td>
+    <td th:text="${producto.descripcion}">Descripción</td>
+    <td th:text="${producto.precio}">Precio</td>
+    <td>
+     <!-- <img th:src="@{/uploads/{foto}(foto=${producto.foto})}" alt="Imagen de producto" style="width: 100px; height: auto;" /> -->
+    </td>
+    <td>
+      <!-- Enlace para editar el producto -->
+      <a th:href="@{'/products/edit/' + ${producto.id}}">Editar</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
