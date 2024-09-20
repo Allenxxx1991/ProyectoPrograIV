@@ -30,6 +30,7 @@ public class LoginController {
             Optional<Cliente> cliente = service.clienteFindById(user.getUsuario());
             if (cliente.isPresent() && cliente.get().getContrasena().equals(user.getPassword())) {
                 httpSession.setAttribute("cliente", cliente);
+
                 return "presentation/home/ViewHome";
             }
 

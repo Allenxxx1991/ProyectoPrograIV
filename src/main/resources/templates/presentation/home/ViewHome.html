@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
 <h1>Home</h1>
 <div class="container-home">
+    <!-- Mostrar el nombre del cliente si está logueado -->
     <div th:if="${session.cliente != null}">
         <h1>Bienvenido(a) <span th:text="${session.cliente.get().getNombre()}"></span></h1>
     </div>
+
+    <!-- Mostrar el nombre del dependiente si está logueado -->
     <div th:if="${session.dependiente != null}">
         <h1>Bienvenido(a) <span th:text="${session.dependiente.get().getNombre()}"></span></h1>
+        <a href="/ordenes/pendientes" class="btn btn-primary">Ver Órdenes Pendientes</a>
     </div>
+
+    <!-- Mostrar el nombre del administrador si está logueado -->
     <div th:if="${session.administrador != null}">
         <h1>Bienvenido(a) <span th:text="${session.administrador.get().getNombre()}"></span></h1>
+        <a href="/ordenes/pendientes" class="btn btn-primary">Ver Órdenes Pendientes</a>
     </div>
 </div>
 </body>
