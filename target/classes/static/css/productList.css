@@ -12,8 +12,8 @@
 
 .carousel {
     position: relative;
-    width: 200px;
-    height: 150px;
+    width: 175px;
+    height: 131px;
     overflow: hidden;
     border: 1px solid #ddd;
 }
@@ -24,8 +24,8 @@
 }
 
 .carousel .slide {
-    width: 200px;
-    height: 150px;
+    width: 175px;
+    height: 131px;
 }
 
 .carousel input {
@@ -52,8 +52,8 @@
 }
 
 .carousel .controls label {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background: none;
+    border: none;
     padding: 5px;
     cursor: pointer;
     display: inline-block;
@@ -65,8 +65,8 @@
 }
 
 .products h2 {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .products p {

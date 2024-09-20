@@ -6,8 +6,7 @@
     <title>Home</title>
 </head>
 <body>
-<header th:replace="presentation/menu/fragments :: header"></header>
-
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
 <h1>Home</h1>
 <div class="container-home">
     <div th:if="${session.cliente != null}">

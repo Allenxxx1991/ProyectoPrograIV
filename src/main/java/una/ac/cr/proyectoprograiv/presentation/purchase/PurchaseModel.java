@@ -47,4 +47,8 @@ public class PurchaseModel {
                 .map(detalle -> detalle.getSubtotal())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public void deleteDetalleOrden(Integer detalleId) {
+        lineas.removeIf(detalle -> detalle.getIdProducto().getId().equals(detalleId)); // Assuming DetalleOrden has a getId() method
+    }
 }

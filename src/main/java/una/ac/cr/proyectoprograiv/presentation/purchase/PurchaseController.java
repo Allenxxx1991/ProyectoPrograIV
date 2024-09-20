@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import una.ac.cr.proyectoprograiv.logic.*;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 
@@ -58,7 +59,7 @@ public class PurchaseController {
                 purchaseModel.addLinea(detalleOrden);
                 purchaseModel.calculateTotal();
             }else {
-                model.addAttribute("message", "Product is already in the order.");
+                model.addAttribute("message", "El producto ya se encuentra en la orden.");
             }
         }
 
@@ -69,30 +70,40 @@ public class PurchaseController {
     @PostMapping("/purchase/createOrder")
     public String createOrder(@RequestParam String medioPago, Model model) {
         PurchaseModel purchaseModel = (PurchaseModel) model.getAttribute("purchaseModel");
-
-        Orden orden = new Orden();
-        Optional<Cliente> cliente = (Optional<Cliente>) httpSession.getAttribute("cliente");
-        orden.setIdCliente(cliente.get());
-        orden.setEstado("pendiente");
-        orden.setMedioPago(medioPago);
-        orden.setFechaCreacion(Instant.now());
-
-        BigDecimal total = BigDecimal.ZERO;
         assert purchaseModel != null;
-        for (DetalleOrden detalle : purchaseModel.getLineas()) {
+        if(!purchaseModel.getLineas().isEmpty()) {
+            try {
+                Orden orden = new Orden();
+                Optional<Cliente> cliente = (Optional<Cliente>) httpSession.getAttribute("cliente");
+                orden.setIdCliente(cliente.get());
+                orden.setEstado("pendiente");
+                orden.setFechaCreacion(Instant.now().minus(Duration.ofHours(6)));
+                orden.setMedioPago(medioPago);
 
-            total = total.add(detalle.getSubtotal());
-            orden.getDetalleordens().add(detalle);
+                BigDecimal total = BigDecimal.ZERO;
+                for (DetalleOrden detalle : purchaseModel.getLineas()) {
+
+                    total = total.add(detalle.getSubtotal());
+                    orden.getDetalleordens().add(detalle);
+                }
+                orden.setTotal(total);
+
+                service.ordenSave(orden);
+
+                for (DetalleOrden detalle : purchaseModel.getLineas()) {
+                    detalle.setIdOrden(orden);
+                    service.detalleOrdenSave(detalle);
+                }
+                purchaseModel.getLineas().clear();
+            }catch (Exception e) {
+                model.addAttribute("error", "Ocurrió un error al guardar la orden.");
+                return "presentation/purchase/ViewProductos";
+            }
         }
-        orden.setTotal(total);
-
-        service.ordenSave(orden);
-
-        for (DetalleOrden detalle : purchaseModel.getLineas()) {
-            detalle.setIdOrden(orden);
-            service.detalleOrdenSave(detalle);
+        else{
+            model.addAttribute("error", "La orden esta vaciá.");
+            return "presentation/purchase/ViewProductos";
         }
-        purchaseModel.getLineas().clear();
 
         return "redirect:/purchase/products";
     }
@@ -102,7 +113,7 @@ public class PurchaseController {
                                         @RequestParam("cantidad") int cantidad,
                                         Model model) {
         if (cantidad < 1 || cantidad > 100) {
-            model.addAttribute("error", "Quantity must be between 1 and 100.");
+            model.addAttribute("error", "Cantidad debe tener un valor entre 1 y 100.");
             return "presentation/purchase/ViewProductos";
         }
 
@@ -121,7 +132,16 @@ public class PurchaseController {
         return "presentation/purchase/ViewProductos";
     }
 
+    @PostMapping("/purchase/deleteDetalleOrden")
+    public String deleteDetalleOrden(@RequestParam Integer detalleId, Model model) {
+        PurchaseModel purchaseModel = (PurchaseModel) model.getAttribute("purchaseModel");
+        if (purchaseModel != null) {
+            purchaseModel.deleteDetalleOrden(detalleId);
+        }
+        assert purchaseModel != null;
+        purchaseModel.calculateTotal();
 
-
+        return "presentation/purchase/ViewProductos";
+    }
 }
 

@@ -178,6 +178,11 @@ public class LoginController {
 
         if ("save".equals(action)) {
             try {
+                if(!isDireccionValida(direccionPrincipal)) {
+                    addDireccionAttributes(provinciaSeleccionada, cantonSeleccionado, distritoSeleccionado, provinciaSecundariaSeleccionada, cantonSecundarioSeleccionado, distritoSecundarioSeleccionado, model);
+                    model.addAttribute("error", "Se deben completar los campos de dirección principal.");
+                    return "presentation/login/ViewRegistro";
+                }
                 service.clienteSave(cliente);
 
                 direccionPrincipal.setIdCliente(cliente);
@@ -200,13 +205,17 @@ public class LoginController {
                 return "presentation/login/ViewRegistro";
             }
         }
+        addDireccionAttributes(provinciaSeleccionada, cantonSeleccionado, distritoSeleccionado, provinciaSecundariaSeleccionada, cantonSecundarioSeleccionado, distritoSecundarioSeleccionado, model);
+        return "presentation/login/ViewRegistro";
+    }
+
+    private void addDireccionAttributes(@RequestParam(required = false) String provinciaSeleccionada, @RequestParam(required = false) String cantonSeleccionado, @RequestParam(required = false) String distritoSeleccionado, @RequestParam(required = false) String provinciaSecundariaSeleccionada, @RequestParam(required = false) String cantonSecundarioSeleccionado, @RequestParam(required = false) String distritoSecundarioSeleccionado, Model model) {
         model.addAttribute("provinciaSeleccionada", provinciaSeleccionada);
         model.addAttribute("cantonSeleccionado", cantonSeleccionado);
         model.addAttribute("distritoSeleccionado", distritoSeleccionado);
         model.addAttribute("provinciaSecundariaSeleccionada", provinciaSecundariaSeleccionada);
         model.addAttribute("cantonSecundarioSeleccionado", cantonSecundarioSeleccionado);
         model.addAttribute("distritoSecundarioSeleccionado", distritoSecundarioSeleccionado);
-        return "presentation/login/ViewRegistro";
     }
 
     private boolean isDireccionValida(Direccion direccion) {
