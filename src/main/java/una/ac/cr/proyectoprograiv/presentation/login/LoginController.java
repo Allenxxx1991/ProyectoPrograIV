@@ -36,9 +36,14 @@ public class LoginController {
             Optional<Usuario> usuario = service.usuarioFindById(user.getUsuario());
             if (usuario.isPresent() && usuario.get().getContrasena().equals(user.getPassword())) {
                 if ("dependiente".equals(usuario.get().getRol())) {
-                    if (!usuario.get().getEstado().equals("activo")) {
+                    if (usuario.get().getEstado().equals("inactivo")) {
                         model.addAttribute("error", "Su cuenta está inactiva.");
                         return "presentation/login/ViewLogin";
+                    }
+                    if (usuario.get().getEstado().equals("datos")){
+                        httpSession.setAttribute("dependiente", usuario);
+                        model.addAttribute("usuario", usuario.get());
+                        return "presentation/login/ViewActualizarDatos";
                     }
                     httpSession.setAttribute("dependiente", usuario);
                     return "presentation/home/ViewHome";
@@ -244,7 +249,7 @@ public class LoginController {
             model.addAttribute("user", user);
             return "presentation/login/ViewLogin";
         } catch (Exception e) {
-            model.addAttribute("error", "Ocurrió un error al guardar las direcciones.");
+            model.addAttribute("error", "Ocurrió un error al guardar el usuario.");
             return "presentation/login/ViewRegistroUsuario";
         }
     }
@@ -256,4 +261,23 @@ public class LoginController {
         httpSession.invalidate();
         return "/presentation/login/ViewLogin";
     }
+
+
+    @PostMapping("/presentation/login/actualizarDatos")
+    public String actualizaDatos(Model model, @ModelAttribute Usuario usuario) {
+        try {
+            usuario.setEstado("activo");
+            usuario.setRol("dependiente");
+            service.usuarioSave(usuario);
+            Optional<Usuario> dependiente = service.usuarioFindById(usuario.getIdUsuario());
+            if (dependiente.isPresent()) {
+                httpSession.setAttribute("dependiente", dependiente);
+            }
+            return "presentation/home/ViewHome";
+        } catch (Exception e) {
+            model.addAttribute("error", "Ocurrió un error al actualizar los datos.");
+            return "presentation/login/ViewActualizarDatos";
+        }
+    }
+
 }
