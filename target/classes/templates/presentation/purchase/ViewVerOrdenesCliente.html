@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Órdenes del Cliente</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Órdenes del Cliente</h1>
+
+    <!-- Mostrar el mensaje si no hay órdenes -->
+    <div th:if="${mensaje}">
+        <p th:text="${mensaje}" class="alert alert-info"></p>
+    </div>
+
+    <!-- Mostrar la tabla de órdenes si existen -->
+    <table class="table table-bordered" th:if="${ordenes}">
+        <thead>
+        <tr>
+            <th>ID de la Orden</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orden : ${ordenes}">
+            <p th:text="${session.cliente.get().getNombre()}">Nombre del Cliente</p>
+
+            <td th:text="${orden.id}"></td>
+            <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
+            <td th:text="${orden.total}"></td>
+            <td th:text="${orden.estado}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
