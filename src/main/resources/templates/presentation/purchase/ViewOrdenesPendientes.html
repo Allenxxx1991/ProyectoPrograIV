@@ -27,7 +27,7 @@
             <tr th:each="orden : ${ordenes}">
                 <td th:text="${orden.id}">1</td>
                 <td th:text="${orden.idCliente.nombre}">Cliente Nombre</td>
-                <td th:text="${orden.fechaCreacion}">2024-09-18</td>
+                <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
                 <td th:text="${orden.total}">Total</td>
                 <td th:text="${orden.estado}">Pendiente</td>
                 <td>

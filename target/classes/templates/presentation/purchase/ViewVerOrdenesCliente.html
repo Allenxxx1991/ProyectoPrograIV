@@ -13,7 +13,7 @@
     <div th:if="${mensaje}">
         <p th:text="${mensaje}" class="alert alert-info"></p>
     </div>
-
+    <p th:text="${session.cliente.get().getNombre()}">Nombre del Cliente</p>
     <!-- Mostrar la tabla de órdenes si existen -->
     <table class="table table-bordered" th:if="${ordenes}">
         <thead>
@@ -26,8 +26,6 @@
         </thead>
         <tbody>
         <tr th:each="orden : ${ordenes}">
-            <p th:text="${session.cliente.get().getNombre()}">Nombre del Cliente</p>
-
             <td th:text="${orden.id}"></td>
             <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
             <td th:text="${orden.total}"></td>
