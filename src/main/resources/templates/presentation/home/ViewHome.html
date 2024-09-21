@@ -11,7 +11,8 @@
     <!-- Mostrar el nombre del cliente si está logueado -->
     <div th:if="${session.cliente != null}">
         <h1>Bienvenido(a) <span th:text="${session.cliente.get().getNombre()}"></span></h1>
-        <a href="/ordenes/cliente" class="btn btn-primary">Ver mis órdenes</a>
+        <!-- Crear un enlace dinámico que pase el ID del cliente -->
+        <a th:href="@{/ordenes/cliente/{id}(id=${session.cliente.get().getIdCliente()})}" class="btn btn-primary">Ver mis órdenes</a>
     </div>
 
     <!-- Mostrar el nombre del dependiente si está logueado -->
