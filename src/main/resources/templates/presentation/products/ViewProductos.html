@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
 <div>
     <form th:action="@{/products/upload}" th:object="${producto}" method="post" enctype="multipart/form-data">
         <label for="nombre">Product Name:</label>
