@@ -1,6 +1,7 @@
 package una.ac.cr.proyectoprograiv.logic;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -16,7 +17,7 @@ public class Cliente {
     private String idCliente;
 
     @Size(max = 100)
-    @NotNull
+    @NotNull(message = "Dato requerido")
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 

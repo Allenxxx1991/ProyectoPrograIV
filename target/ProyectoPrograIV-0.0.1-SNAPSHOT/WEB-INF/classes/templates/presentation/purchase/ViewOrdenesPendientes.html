@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Órdenes Pendientes</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Órdenes Pendientes</h1>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orden : ${ordenes}">
+            <td th:text="${orden.idOrden}"></td>
+            <td th:text="${orden.idCliente.nombre}"></td>
+            <td th:text="${orden.fechaCreacion}"></td>
+            <td th:text="${orden.total}"></td>
+            <td th:text="${orden.estado}"></td>
+            <td>
+                <form th:action="@{/ordenes/cambiar-estado}" method="post">
+                    <input type="hidden" name="idOrden" th:value="${orden.idOrden}"/>
+                    <select name="nuevoEstado">
+                        <option value="en_proceso">En Proceso</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -5,36 +5,37 @@
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/login.css}">
-
 </head>
 <body>
+<div class="container">
+    <!-- Sección de Bienvenida -->
+    <div class="welcome-section">
+        <h1>BIENVENIDO A COOKIE SHOP</h1>
+        <img th:src="@{/images/welcome-cookie.png}" alt="Cookie Image">
+    </div>
 
-<div class="inicio-Sesion">
-    <form class="login-form" method="post" th:action="@{/presentation/login}" enctype="multipart/form-data" th:object="${user}">
-        <label>Tipo</label>
-        <div class="form-group">
-            <label> Identificacion:
-                <input type="text" class="form-control" th:field="${user.usuario}">
-            </label>
-        </div>
-        <div class="form-group">
-            <label> Clave:
-                <input type="password" class="form-control" th:field="${user.password}" >
-            </label>
-        </div>
+    <!-- Sección de Login -->
+    <div class="login-section">
+        <div class="inicio-Sesion">
+            <form class="login-form" method="post" th:action="@{/presentation/login}" enctype="multipart/form-data" th:object="${user}">
+                <div class="form-group">
+                    <label>Identificación:</label>
+                    <input type="text" class="form-control" th:field="${user.usuario}">
+                </div>
+                <div class="form-group">
+                    <label>Clave:</label>
+                    <input type="password" class="form-control" th:field="${user.password}">
+                </div>
 
-        <p th:if="${error}" th:text="${error}" class="error-message"></p>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+                <p th:if="${error}" th:text="${error}" class="error-message"></p>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </div>
+            </form>
+            <a class="nav-link" th:href="@{/registro}">Registro Cliente</a>
+            <a class="nav-link" th:href="@{/registroUsuario}">Registro Usuario</a>
         </div>
-
-    </form>
-    <a class="nav-link" th:href="@{/registro}">Registro Cliente</a>
-    <a class="nav-link" th:href="@{/registroUsuario}">Registro Usuario</a>
+    </div>
 </div>
-
 </body>
 </html>
-
-
-

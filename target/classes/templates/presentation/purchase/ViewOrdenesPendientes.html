@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Órdenes Pendientes</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/productList.css}"> <!-- Incluyendo ambos estilos si es necesario -->
+</head>
+<body>
+<div class="container">
+    <h1>Órdenes Pendientes</h1>
+
+    <div class="order">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Repite cada orden y muestra los detalles -->
+            <tr th:each="orden : ${ordenes}">
+                <td th:text="${orden.id}">1</td>
+                <td th:text="${orden.idCliente.nombre}">Cliente Nombre</td>
+                <td th:text="${#dates.format(orden.fechaCreacion, 'dd-MM-yyyy')}"></td>
+                <td th:text="${orden.total}">Total</td>
+                <td th:text="${orden.estado}">Pendiente</td>
+                <td>
+                    <form th:action="@{/ordenes/cambiar-estado}" method="post">
+                        <input type="hidden" name="idOrden" th:value="${orden.id}"/>
+                        <select name="nuevoEstado">
+                            <option value="en_proceso">En Proceso</option>
+                            <option value="entregado">Entregado</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
