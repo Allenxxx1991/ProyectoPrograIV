@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Órdenes Pendientes</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/productList.css}"> <!-- Incluyendo ambos estilos si es necesario -->
+    <link rel="stylesheet" th:href="@{/css/productList.css}">
 </head>
 <body>
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
 <div class="container">
     <h1>Órdenes Pendientes</h1>
 
@@ -27,7 +28,7 @@
             <tr th:each="orden : ${ordenes}">
                 <td th:text="${orden.id}">1</td>
                 <td th:text="${orden.idCliente.nombre}">Cliente Nombre</td>
-                <td th:text="${#dates.format(orden.fechaCreacion, 'dd-MM-yyyy')}"></td>
+                <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
                 <td th:text="${orden.total}">Total</td>
                 <td th:text="${orden.estado}">Pendiente</td>
                 <td>

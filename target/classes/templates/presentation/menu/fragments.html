@@ -21,7 +21,6 @@
                         <li class="nav-item">
                             <a class="nav-link" th:href = "@{/home}">Inicio</a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link"  th:href = "@{/home}">Productos</a>
                         </li>
@@ -47,7 +46,7 @@
                             <a class="nav-link" th:href = "@{/logout}">Clientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/logout}">Facturación</a>
+                            <a class="nav-link" href="/ordenes/pendientes">Ordenes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"  th:href = "@{/products}">Productos</a>
@@ -68,10 +67,10 @@
                             <a class="nav-link" th:href = "@{/home}">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href = "@{/home}">Clientes</a>
+                            <a class="nav-link" th:href="@{/ordenes/cliente/{id}(id=${session.cliente.get().getIdCliente()})}">Mis Ordenes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/purchase/products}">Ordenes</a>
+                            <a class="nav-link" th:href="@{/purchase/products}">Crear Orden</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"  th:href = "@{/products}">Productos</a>
