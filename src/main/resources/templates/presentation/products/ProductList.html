@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Lista de Productos</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/productList.css}">
 </head>
 <body>
 <h1>Lista de Productos</h1>
@@ -23,7 +25,9 @@
     <td th:text="${producto.descripcion}">Descripción</td>
     <td th:text="${producto.precio}">Precio</td>
     <td>
-     <!-- <img th:src="@{/uploads/{foto}(foto=${producto.foto})}" alt="Imagen de producto" style="width: 100px; height: auto;" /> -->
+      <img th:src="@{/uploads/${producto.FotoProducto.iterator().next().foto}}" alt="Imagen de producto" style="width: 100px; height: auto;" />
+
+      <!-- <img th:src="@{/uploads/{foto}(foto=${producto.foto})}" alt="Imagen de producto" style="width: 100px; height: auto;" /> -->
     </td>
     <td>
       <!-- Enlace para editar el producto -->
