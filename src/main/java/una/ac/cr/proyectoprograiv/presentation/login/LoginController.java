@@ -37,9 +37,14 @@ public class LoginController {
             Optional<Usuario> usuario = service.usuarioFindById(user.getUsuario());
             if (usuario.isPresent() && usuario.get().getContrasena().equals(user.getPassword())) {
                 if ("dependiente".equals(usuario.get().getRol())) {
-                    if (!usuario.get().getEstado().equals("activo")) {
+                    if (usuario.get().getEstado().equals("inactivo")) {
                         model.addAttribute("error", "Su cuenta está inactiva.");
                         return "presentation/login/ViewLogin";
+                    }
+                    if (usuario.get().getEstado().equals("datos")){
+                        httpSession.setAttribute("dependiente", usuario);
+                        model.addAttribute("usuario", usuario.get());
+                        return "presentation/login/ViewActualizarDatos";
                     }
                     httpSession.setAttribute("dependiente", usuario);
                     return "presentation/home/ViewHome";
@@ -179,6 +184,11 @@ public class LoginController {
 
         if ("save".equals(action)) {
             try {
+                if(!isDireccionValida(direccionPrincipal)) {
+                    addDireccionAttributes(provinciaSeleccionada, cantonSeleccionado, distritoSeleccionado, provinciaSecundariaSeleccionada, cantonSecundarioSeleccionado, distritoSecundarioSeleccionado, model);
+                    model.addAttribute("error", "Se deben completar los campos de dirección principal.");
+                    return "presentation/login/ViewRegistro";
+                }
                 service.clienteSave(cliente);
 
                 direccionPrincipal.setIdCliente(cliente);
@@ -201,13 +211,17 @@ public class LoginController {
                 return "presentation/login/ViewRegistro";
             }
         }
+        addDireccionAttributes(provinciaSeleccionada, cantonSeleccionado, distritoSeleccionado, provinciaSecundariaSeleccionada, cantonSecundarioSeleccionado, distritoSecundarioSeleccionado, model);
+        return "presentation/login/ViewRegistro";
+    }
+
+    private void addDireccionAttributes(@RequestParam(required = false) String provinciaSeleccionada, @RequestParam(required = false) String cantonSeleccionado, @RequestParam(required = false) String distritoSeleccionado, @RequestParam(required = false) String provinciaSecundariaSeleccionada, @RequestParam(required = false) String cantonSecundarioSeleccionado, @RequestParam(required = false) String distritoSecundarioSeleccionado, Model model) {
         model.addAttribute("provinciaSeleccionada", provinciaSeleccionada);
         model.addAttribute("cantonSeleccionado", cantonSeleccionado);
         model.addAttribute("distritoSeleccionado", distritoSeleccionado);
         model.addAttribute("provinciaSecundariaSeleccionada", provinciaSecundariaSeleccionada);
         model.addAttribute("cantonSecundarioSeleccionado", cantonSecundarioSeleccionado);
         model.addAttribute("distritoSecundarioSeleccionado", distritoSecundarioSeleccionado);
-        return "presentation/login/ViewRegistro";
     }
 
     private boolean isDireccionValida(Direccion direccion) {
@@ -236,8 +250,40 @@ public class LoginController {
             model.addAttribute("user", user);
             return "presentation/login/ViewLogin";
         } catch (Exception e) {
-            model.addAttribute("error", "Ocurrió un error al guardar las direcciones.");
+            model.addAttribute("error", "Ocurrió un error al guardar el usuario.");
             return "presentation/login/ViewRegistroUsuario";
         }
     }
+
+    @PostMapping("/logout")
+    public String logout(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        httpSession.invalidate();
+        return "/presentation/login/ViewLogin";
+    }
+
+
+    @PostMapping("/presentation/login/actualizarDatos")
+    public String actualizaDatos(Model model, @ModelAttribute Usuario usuario) {
+        try {
+            usuario.setEstado("activo");
+            usuario.setRol("dependiente");
+            service.usuarioSave(usuario);
+            Optional<Usuario> dependiente = service.usuarioFindById(usuario.getIdUsuario());
+            if (dependiente.isPresent()) {
+                httpSession.setAttribute("dependiente", dependiente);
+            }
+            return "presentation/home/ViewHome";
+        } catch (Exception e) {
+            model.addAttribute("error", "Ocurrió un error al actualizar los datos.");
+            return "presentation/login/ViewActualizarDatos";
+        }
+    }
+
+    @GetMapping("/home")
+    public String showHome() {
+        return "presentation/home/ViewHome";
+    }
+
 }

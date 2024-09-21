@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<header th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/home}">
+                <img th:src="@{/icons/logo.jpeg}" alt="LogoEmpresa" height="40">
+                <strong>Cookie Shop</strong>
+            </a>
+            <div th:if="${session.administrador != null}">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href = "@{/home}">Inicio</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href = "@{/home}">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href = "@{/solicitudes}">Solicitudes</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="#" th:action="@{/logout}" method="post" style="display: inline;">
+                                <input type="submit" value="Logout" class="nav-link" />
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div th:if="${session.dependiente != null}">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href = "@{/home}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href = "@{/logout}">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/logout}">Facturación</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href = "@{/products}">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="#" th:action="@{/logout}" method="post" style="display: inline;">
+                                <input type="submit" value="Logout" class="nav-link" />
+                            </form>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div th:if="${session.cliente != null}">
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href = "@{/home}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href = "@{/home}">Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/purchase/products}">Ordenes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"  th:href = "@{/products}">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="#" th:action="@{/logout}" method="post" style="display: inline;">
+                                <input type="submit" value="Logout" class="nav-link" />
+                            </form>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+</body>
+</html>

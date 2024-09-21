@@ -130,6 +130,7 @@
         </div>
 
         <button type="submit" name="action" value="save">Guardar</button>
+        <div th:if="${error}" th:text="${error}" style="color: red;"></div>
     </form>
 </div>
 </body>

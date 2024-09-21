@@ -5,12 +5,12 @@ USE venta_galletas;
 -- Tabla de Usuario (administradores y dependientes)
 CREATE TABLE IF NOT EXISTS Usuario (
     id_usuario VARCHAR(15) PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     rol ENUM('administrador', 'dependiente') NOT NULL,
-    estado ENUM('activo', 'inactivo') DEFAULT 'activo'
+    estado ENUM('activo', 'inactivo', 'datos') DEFAULT 'activo'
 );
 
 -- Tabla de Cliente
@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS Producto (
     precio DECIMAL(10, 2) NOT NULL
 );
 
+ALTER TABLE Producto ADD INDEX idx_nombre (nombre);
+
 -- Tabla de Fotos de los productos
 CREATE TABLE IF NOT EXISTS FotoProducto (
     id_foto INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,12 +53,11 @@ CREATE TABLE IF NOT EXISTS FotoProducto (
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto) ON DELETE CASCADE
 );
 
--- Tabla de Orden
 CREATE TABLE IF NOT EXISTS Orden (
     id_orden INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente VARCHAR(15),
     id_usuario VARCHAR(15) DEFAULT NULL,
-    estado ENUM('pendiente', 'en_proceso', 'entregado', 'cancelado') DEFAULT 'pendiente',
+    estado ENUM('pendiente', 'en proceso', 'entregado', 'cancelado') DEFAULT 'pendiente',
     total DECIMAL(10, 2) NOT NULL,
     medio_pago VARCHAR(100) NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -74,3 +75,6 @@ CREATE TABLE IF NOT EXISTS DetalleOrden (
     FOREIGN KEY (id_orden) REFERENCES Orden(id_orden) ON DELETE CASCADE,
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto) ON DELETE CASCADE
 );
+
+INSERT INTO Usuario (id_usuario, nombre, apellido, email, contrasena, rol)
+VALUES ('1234', 'John', 'Doe', 'john.doe@example.com', '1234', 'administrador');

@@ -46,6 +46,19 @@ public class Orden {
     @OneToMany(mappedBy = "idOrden")
     private Set<DetalleOrden> detalleordens = new LinkedHashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    @JoinColumn(name = "id_usuario")
+    private Usuario idUsuario;
+
+    public Usuario getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuario idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public Integer getId() {
         return id;
     }

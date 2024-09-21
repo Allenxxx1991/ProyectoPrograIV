@@ -17,18 +17,15 @@ public class Usuario {
     private String idUsuario;
 
     @Size(max = 100)
-    @NotNull
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", length = 100)
     private String nombre;
 
     @Size(max = 100)
-    @NotNull
-    @Column(name = "apellido", nullable = false, length = 100)
+    @Column(name = "apellido", length = 100)
     private String apellido;
 
     @Size(max = 100)
-    @NotNull
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", length = 100)
     private String email;
 
     @Size(max = 255)
@@ -45,6 +42,17 @@ public class Usuario {
     @Lob
     @Column(name = "estado")
     private String estado;
+
+    @OneToMany(mappedBy = "idUsuario")
+    private Set<Orden> ordens = new LinkedHashSet<>();
+
+    public Set<Orden> getOrdens() {
+        return ordens;
+    }
+
+    public void setOrdens(Set<Orden> ordens) {
+        this.ordens = ordens;
+    }
 
     public String getIdUsuario() {
         return idUsuario;
