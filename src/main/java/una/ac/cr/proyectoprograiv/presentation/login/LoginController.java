@@ -280,4 +280,9 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/home")
+    public String showHome() {
+        return "presentation/home/ViewHome";
+    }
+
 }
