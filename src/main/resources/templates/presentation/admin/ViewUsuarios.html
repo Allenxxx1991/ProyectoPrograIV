@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
+<div class="container mt-4">
+    <h2>Lista de Usuarios</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Estado</th>
+            <th>Cambiar Rol</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.idUsuario}"></td>
+            <td th:text="${usuario.nombre + ' ' + usuario.apellido}"></td>
+            <td th:text="${usuario.email}"></td>
+            <td th:text="${usuario.estado}"></td>
+            <td>
+                <form th:action="@{/cambiarRol}" method="post">
+                    <input type="hidden" th:name="idUsuario" th:value="${usuario.idUsuario}" />
+                    <select th:name="nuevoEstado" class="form-control">
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Cambiar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${message}" th:text="${message}"></div>
+</div>
+</body>
+</html>

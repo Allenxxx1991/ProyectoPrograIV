@@ -11,6 +11,7 @@ import una.ac.cr.proyectoprograiv.logic.Usuario;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Controller("admin")
 public class AdminController {
@@ -43,5 +44,27 @@ public class AdminController {
         List<Usuario> usuarios = service.usuarioFindByEstado("inactivo");
         model.addAttribute("usuarios", usuarios);
         return "/presentation/admin/ViewSolicitudes";
+    }
+
+    @GetMapping("/admin/usuarios")
+    String showUsuarios(Model model) {
+        List<Usuario> usuarios = (List<Usuario>) service.usuarioFindAll();
+        List<Usuario> filteredUsuarios = usuarios.stream()
+                .filter(usuario -> !"datos".equals(usuario.getEstado()) && "dependiente".equals(usuario.getRol()))
+                .collect(Collectors.toList());
+        model.addAttribute("usuarios", filteredUsuarios);
+        return "/presentation/admin/ViewUsuarios";
+    }
+
+    @PostMapping("/cambiarRol")
+    String cambioRol(Model model, @RequestParam String idUsuario, @RequestParam String nuevoEstado) {
+        try {
+            Usuario usuario = service.usuarioFindById(idUsuario).get();
+            usuario.setEstado(nuevoEstado);
+            service.usuarioSave(usuario);
+        }catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+        }
+        return showUsuarios(model);
     }
 }

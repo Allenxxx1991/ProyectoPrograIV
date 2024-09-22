@@ -57,21 +57,6 @@ public class Service {
         // Leer el archivo JSON y mapear a la estructura de datos
         provincias = mapper.readValue(jsonStream, mapper.getTypeFactory().constructMapType(Map.class, String.class, Provincia.class));
     }
-    @PostConstruct
-    public void initData() {
-        // Agregar dependientes quemados para prueba
-        if (!usuarioRepository.existsById("222")) {
-            Usuario dependiente1 = new Usuario();
-            dependiente1.setIdUsuario("222");
-            dependiente1.setNombre("John");
-            dependiente1.setApellido("Doe");
-            dependiente1.setEmail("john.doe@cookie-shop.com");
-            dependiente1.setContrasena("222"); // Asegúrate de usar una contraseña cifrada en producción
-            dependiente1.setRol("dependiente");
-            dependiente1.setEstado("activo");
-            usuarioRepository.save(dependiente1);
-        }
-    }
 
     public Map<String, Provincia> getProvincias() {
         return provincias;
