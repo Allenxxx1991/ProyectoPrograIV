@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import una.ac.cr.proyectoprograiv.logic.FotoProducto;
 import una.ac.cr.proyectoprograiv.logic.Producto;
 import una.ac.cr.proyectoprograiv.logic.Service;
+import una.ac.cr.proyectoprograiv.presentation.purchase.PurchaseModel;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,6 @@ public class ProductsController {
             producto.setPrecio(BigDecimal.valueOf(precio));
             service.productoSave(producto);
 
-            // Manejo de las fotos (si es necesario subir nuevas fotos)
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 try {
@@ -70,7 +71,7 @@ public class ProductsController {
                         service.fotoProductoSave(foto);
                     } catch (IOException e) {
                         model.addAttribute("error", "Error al guardar el archivo.");
-                        return "/presentation/products/ViewEditProduct";
+                        return "/presentation/products/ViewEditProducts";
                     }
                 }
             }
@@ -84,29 +85,21 @@ public class ProductsController {
         if (optionalProducto.isPresent()) {
             Producto producto = optionalProducto.get();
             model.addAttribute("producto", producto);
-            return "presentation/products/ViewEditProducts";  // Cargar la vista de edición
+            return "presentation/products/ViewEditProducts";
         }
-        return "redirect:/products";  // Si no se encuentra el producto, redirige a la lista de productos.
+        return "redirect:/products";
     }
 
     @GetMapping("/products")
     public String products(Model model) {
-        // Obtener todos los productos
-        Iterable<Producto> productosIterable = service.productoFindAll();
-        List<Producto> productos = new ArrayList<>();
-        productosIterable.forEach(productos::add);  // Convertir a List
 
-        // Agregar la lista de productos al modelo
+        List<Producto> productos = (List<Producto>) service.productoFindAll();
+        for (Producto producto : productos) {
+            List<FotoProducto> fotos = service.fotoProductoFindByIdProducto(producto);
+            producto.setFotoproductos(new LinkedHashSet<>(fotos));
+        }
         model.addAttribute("productos", productos);
-
-        // Crear un nuevo producto para el formulario (si es necesario)
-        Producto producto = new Producto();
-        FotoProducto foto = new FotoProducto();
-        model.addAttribute("producto", producto);
-        model.addAttribute("foto", foto);
-
-        // Retornar la vista que mostrará la lista y el formulario
-        return "presentation/products/ProductList";  // Cambia esto por la vista adecuada
+        return "presentation/products/ProductList";
     }
 
     @PostMapping("/products/upload")
@@ -141,11 +134,23 @@ public class ProductsController {
             }
 
         } catch (IOException e) {
-            model.addAttribute("error", "Ocurrió un error durante el inicio de sesión.");
-            return "/presentation/products/ViewEditProducts";
+            model.addAttribute("error", "Ocurrió un error al guardar el producto.");
+            return "/presentation/products/ViewProductos";
         }
 
         return "redirect:/products";
     }
+
+
+
+    @GetMapping("/products/upload")
+    public String productsUpload(Model model) {
+        Producto producto = new Producto();
+        FotoProducto foto = new FotoProducto();
+        model.addAttribute("producto", producto);
+        model.addAttribute("foto", foto);
+        return "/presentation/products/ViewProductos";
+    }
+
 
 }

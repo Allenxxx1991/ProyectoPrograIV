@@ -6,33 +6,36 @@
     <link rel="stylesheet" th:href="@{/css/ViewEditProducto.css}">
 </head>
 <body>
-<h1>Editar Producto</h1>
-<form th:action="@{/products/update}" method="post" enctype="multipart/form-data">
-    <input type="hidden" th:value="${producto.id}" name="id">
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
+<div class="container mt-5">
+    <form th:action="@{/products/update}" method="post" enctype="multipart/form-data" class="bg-light p-4 rounded">
+        <h2 class="mb-4">Editar Producto</h2>
+        <input type="hidden" th:value="${producto.id}" name="id">
 
-    <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}">
-    </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" th:value="${producto.nombre}" class="form-control" required />
+        </div>
 
-    <div class="form-group">
-        <label for="descripcion">Descripción:</label>
-        <textarea id="descripcion" name="descripcion" th:text="${producto.descripcion}"></textarea>
-    </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" th:text="${producto.descripcion}" class="form-control" required></textarea>
+        </div>
 
-    <div class="form-group">
-        <label for="precio">Precio:</label>
-        <input type="number" id="precio" name="precio" th:value="${producto.precio}">
-    </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio:</label>
+            <input type="number" id="precio" name="precio" th:value="${producto.precio}" class="form-control" min="0" required />
+        </div>
 
-    <div class="form-group">
-        <label for="fotos">Fotos:</label>
-        <input type="file" id="fotos" name="fotos" multiple>
-    </div>
+        <div class="mb-3">
+            <label for="fotos" class="form-label">Fotos:</label>
+            <input type="file" id="fotos" name="fotos" class="form-control" accept="image/*" multiple />
+        </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn-primary">Guardar Cambios</button>
-    </div>
-</form>
+        <p th:if="${error}" th:text="${error}" class="text-danger"></p>
+
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>
 </body>
 </html>

@@ -1,24 +1,19 @@
 .productsContainer {
     width: 100%;
-    height: 40vh;
-    overflow-x: auto;
     display: flex;
-}
-
-.productsContainerL {
-    width: 100%;
-    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
 }
 
 .products {
-    flex: 0 0 auto;
+    flex: 0 1 240px; /* Flex-grow: 0; Flex-shrink: 1; Flex-basis: 240px */
     margin-right: 20px;
+    margin-bottom: 20px; /* Add some space below each product */
 }
 
 .carousel {
     position: relative;
-    width: 175px;
-    height: 131px;
+    width: 240px;
+    height: 180px;
     overflow: hidden;
     border: 1px solid #ddd;
 }
@@ -29,8 +24,8 @@
 }
 
 .carousel .slide {
-    width: 175px;
-    height: 131px;
+    width: 240px;
+    height: 180px;
 }
 
 .carousel input {
@@ -67,13 +62,4 @@
 
 .carousel .controls label:hover {
     background-color: #f0f0f0;
-}
-
-.products h2 {
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.products p {
-    margin: 2px 0;
 }

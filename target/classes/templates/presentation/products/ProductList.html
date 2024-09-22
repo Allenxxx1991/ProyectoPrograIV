@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Lista de Productos</title>
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/productList.css}">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/listaProductos.css}">
 </head>
 <body>
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
 <h1>Lista de Productos</h1>
-<table border="1">
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>Nombre</th>
-    <th>Descripción</th>
-    <th>Precio</th>
-    <th>Imagen</th> <!-- Nueva columna para la imagen -->
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="producto : ${productos}">
-    <td th:text="${producto.id}">ID</td>
-    <td th:text="${producto.nombre}">Nombre</td>
-    <td th:text="${producto.descripcion}">Descripción</td>
-    <td th:text="${producto.precio}">Precio</td>
-    <td>
-      <img th:src="@{/uploads/${producto.FotoProducto.iterator().next().foto}}" alt="Imagen de producto" style="width: 100px; height: auto;" />
+<div class="productsContainer">
+    <div th:each="product : ${productos}" class="products">
+        <h2 th:text="${product.nombre}">Product Name</h2>
+        <p th:text="${product.descripcion}">Product Description</p>
+        <p th:text="'Price: ' + ${product.precio}">Price</p>
 
-      <!-- <img th:src="@{/uploads/{foto}(foto=${producto.foto})}" alt="Imagen de producto" style="width: 100px; height: auto;" /> -->
-    </td>
-    <td>
-      <!-- Enlace para editar el producto -->
-      <a th:href="@{'/products/edit/' + ${producto.id}}">Editar</a>
-    </td>
-  </tr>
-  </tbody>
-</table>
+        <div class="carousel">
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide1-' + ${product.id}" checked>
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide2-' + ${product.id}">
+            <input type="radio" th:name="'carousel-' + ${product.id}" th:id="'slide3-' + ${product.id}">
+
+            <div class="slides">
+                <div th:each="photo, iterStat : ${product.fotoproductos}">
+                    <img th:src="@{'/uploads/' + ${photo.foto}}" class="slide">
+                </div>
+            </div>
+            <div class="controls">
+                <label th:for="'slide1-' + ${product.id}">1</label>
+                <label th:for="'slide2-' + ${product.id}">2</label>
+                <label th:for="'slide3-' + ${product.id}">3</label>
+            </div>
+        </div>
+        <div th:if="${session.dependiente != null}">
+            <div class="text-center">
+                <a class="btn btn-secondary" th:href="@{'/products/edit/' + ${product.id}}">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
