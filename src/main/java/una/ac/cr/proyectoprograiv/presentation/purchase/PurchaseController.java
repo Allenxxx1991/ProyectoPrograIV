@@ -143,5 +143,12 @@ public class PurchaseController {
 
         return "presentation/purchase/ViewProductos";
     }
+
+    @PostMapping("/verDetalles")
+    public String verDetallesOrden(@RequestParam Integer idOrden, Model model) {
+        Orden order = service.ordenFindById(idOrden).get();
+        model.addAttribute("orden", order);
+        return "presentation/purchase/ViewDetallesOrden";
+    }
 }
 

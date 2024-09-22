@@ -19,6 +19,8 @@ public class OrdenController {
 
     @Autowired
     private HttpSession session;
+    @Autowired
+    private Service service;
 
     // Método para listar todas las órdenes pendientes (para dependientes)
     @GetMapping("/pendientes")
@@ -79,4 +81,5 @@ public class OrdenController {
         ordenService.cambiarEstadoOrden(idOrden, nuevoEstado);
         return "redirect:/ordenes/pendientes"; // Redirecciona a la lista de órdenes pendientes
     }
+
 }

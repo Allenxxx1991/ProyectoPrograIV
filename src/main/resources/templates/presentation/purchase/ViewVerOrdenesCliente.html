@@ -23,6 +23,7 @@
             <th>Fecha</th>
             <th>Total</th>
             <th>Estado</th>
+            <th>Detalles</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +32,12 @@
             <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
             <td th:text="${orden.total}"></td>
             <td th:text="${orden.estado}"></td>
+            <td>
+                <form th:action="@{/verDetalles}" method="post">
+                    <input type="hidden" th:name="idOrden" th:value="${orden.id}"/>
+                    <button type="submit" class="btn btn-primary">Detalles</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

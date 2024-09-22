@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de Orden</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            padding: 20px;
+        }
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{presentation/menu/fragments :: header}"></header>
+<div class="container">
+    <h1 class="text-center">Detalles de la Orden</h1>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>ID Cliente</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Medio de Pago</th>
+            <th>Fecha de Creación</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${orden.id}"></td>
+            <td th:text="${orden.idCliente.idCliente}"></td>
+            <td th:text="${orden.estado}"></td>
+            <td th:text="${orden.total}"></td>
+            <td th:text="${orden.medioPago}"></td>
+            <td th:text="${#dates.format(orden.fechaCreacion, 'dd/MM/yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Precio Unitario</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detalle : ${orden.detalleordens}">
+            <td th:text="${detalle.idProducto.nombre}"></td>
+            <td th:text="${detalle.cantidad}"></td>
+            <td th:text="${detalle.subtotal}"></td>
+            <td th:text="${detalle.idProducto.precio}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
